@@ -16,16 +16,16 @@ def index(request):
 
 
 def edit_profile(request):
-    if request.method == 'POST' and request.FILES.get:
-        user = request.user
-        photo = request.FILES['profile_photo']
-        data=Profile(user=user,photo=photo)
-        data.save()
-        messages.success(request, 'Profile photo updated successfully!')
-        return redirect('profile')
-    
-    return render(request, 'MainApp/edit_profile.html')
+    user = request.user
+    profile, created = Profile.objects.get_or_create(user=user)
 
+    if request.method == 'POST' and request.FILES.get('profile_photo'):
+        profile.photo = request.FILES['profile_photo']  # Update photo
+        profile.save()
+        messages.success(request, 'Profile photo updated successfully!')
+        return redirect('edit_profile')  # Redirect to the same page
+
+    return render(request, 'MainApp/edit_profile.html', {'profile': profile})
 
 @login_required(login_url='log_in')
 def change_password(request):

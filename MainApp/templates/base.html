@@ -16,8 +16,8 @@
     <div class="dashboard-container">
         <div class="sidebar">
             <div class="user-info">
-                {% if user.profile_pic %}
-                    <img src="{{ user.profile_pic.url }}" alt="Profile Photo" class="profile-photo">
+                {% if profile.photo %}
+                    <img src="{{ profile.photo.url }}" alt="Profile Photo" class="profile-photo">
                 {% else %}
                     <img src="{% static 'images/my.jpg' %}" alt="Default Profile" class="profile-photo">
                 {% endif %}
