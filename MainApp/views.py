@@ -1,6 +1,11 @@
-from django.shortcuts import render,redirect
-from .forms import EditProfileForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from .models import Profile
 
 
 
@@ -10,16 +15,6 @@ def index(request):
     return render(request,"MainApp/index.html")
 
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.core.exceptions import PermissionDenied
-from .forms import EditProfileForm
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
-from .models import Profile
-
 def edit_profile(request):
     if request.method == 'POST' and request.FILES.get:
         user = request.user
@@ -27,7 +22,7 @@ def edit_profile(request):
         data=Profile(user=user,photo=photo)
         data.save()
         messages.success(request, 'Profile photo updated successfully!')
-        return redirect('profile')  # Redirect to the profile page or wherever needed
+        return redirect('profile')
     
     return render(request, 'MainApp/edit_profile.html')
 

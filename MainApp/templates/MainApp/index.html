@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 
-        <!-- Main Content -->
         <div class="main-content">
             <h1>User Dashboard</h1>
 
-            <!-- Settings Section -->
             <div class="settings-container">
                 <h2>Settings</h2>
 
-                <!-- View Profile -->
                 <div class="setting-item">
                     <div>
                         <i class="fas fa-user setting-icon"></i>
@@ -19,7 +16,6 @@
                     <a href="" class="btn">Edit Profile</a>
                 </div>
 
-                <!-- Change Password -->
                 <div class="setting-item">
                     <div>
                         <i class="fas fa-lock setting-icon"></i>
@@ -29,7 +25,6 @@
                     <a href="{% url 'change_password' %}" class="btn">Change Password</a>
                 </div>
 
-                <!-- Change Profile Photo -->
                 <div class="setting-item">
                     <div>
                         <i class="fas fa-camera setting-icon"></i>
