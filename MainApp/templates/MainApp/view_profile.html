@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card profile-card shadow-lg">
+                <div class="card-header text-center bg-primary text-white">
+                    <h2>User Profile</h2>
+                </div>
+                <div class="card-body">
+                    <div class="profile-info">
+                        <p><strong>Full Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+                        <p><strong>Address:</strong> {{ user.address }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>Mobile:</strong> {{ user.profile.mobile }}</p> <!-- Assuming 'mobile' is in the Profile model -->
+                        <p><strong>Joined Date:</strong> {{ user.date_joined }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .profile-card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-card .card-header {
+        background-color: #4e73df;
+        color: #fff;
+        border-bottom: 2px solid #e3e6f0;
+    }
+
+    .profile-info p {
+        font-size: 1.1rem;
+        margin: 10px 0;
+        line-height: 1.5;
+    }
+
+    .profile-info strong {
+        color: #4e73df;
+    }
+
+    .container {
+        background-color: #090d1b96;
+        padding: 50px 0;
+    }
+
+    .card-body {
+        background-color: #0f0f0f98;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    a.btn {
+        width: 100%;
+        padding: 10px;
+    }
+</style>
+{% endblock %}

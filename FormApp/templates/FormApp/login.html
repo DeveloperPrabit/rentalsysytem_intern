@@ -1,0 +1,296 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login to Your Account</h1>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form method="post" action="{% url 'log_in' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+
+            <div class="remember-me">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Remember Me</label>
+            </div>
+
+            <button type="submit">Login</button>
+
+            <div class="forgot-password">
+                <a href="{% url 'password_reset' %}">Forgot Password?</a>
+            </div>
+
+            <div class="signup-link">
+                Don't have an account? <a href="{% url 'register' %}">Sign Up</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenant Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .form-group label {
+            width: 200px;
+            font-weight: bold;
+        }
+
+        input, select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        .invoice-header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .invoice-details {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Add Tenant Form -->
+        <div class="form-section">
+            <h2>Add New Tenant</h2>
+            <form id="tenantForm">
+                <div class="form-group">
+                    <label>Tenant Photo:</label>
+                    <input type="file" accept="image/*">
+                </div>
+                
+                <fieldset>
+                    <legend>Personal Information</legend>
+                    <div class="form-group">
+                        <label>Tenant Name:</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address:</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile:</label>
+                        <input type="tel" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Profession:</label>
+                        <input type="text" required>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Rental Information</legend>
+                    <div class="form-group">
+                        <label>House Name/No:</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Flat No:</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Room No:</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Rent Amount:</label>
+                        <input type="number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Rent Start Date:</label>
+                        <input type="date" required>
+                    </div>
+                </fieldset>
+                <button type="submit">Add Tenant</button>
+            </form>
+        </div>
+
+        <!-- Tenant List -->
+        <div class="form-section">
+            <h2>Tenant List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Property</th>
+                        <th>Rent Amount</th>
+                        <th>Start Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample data -->
+                    <tr>
+                        <td>John Doe</td>
+                        <td>john@email.com<br>+123456789</td>
+                        <td>House 12, Flat 3B</td>
+                        <td>$1200</td>
+                        <td>2024-03-01</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Invoice Section -->
+        <div class="form-section">
+            <h2>Create Invoice</h2>
+            <form id="invoiceForm">
+                <div class="form-group">
+                    <label>Tenant:</label>
+                    <select required>
+                        <option value="">Select Tenant</option>
+                        <option>John Doe</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Invoice Period:</label>
+                    <input type="month" required>
+                </div>
+                <div class="form-group">
+                    <label>Due Date:</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount:</label>
+                    <input type="number" required>
+                </div>
+                <div class="form-group">
+                    <label>Payment Status:</label>
+                    <select required>
+                        <option value="paid">Paid</option>
+                        <option value="unpaid">Unpaid</option>
+                    </select>
+                </div>
+                <button type="submit">Generate Invoice</button>
+            </form>
+        </div>
+
+        <!-- Invoice List -->
+        <div class="form-section">
+            <h2>Invoice List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Invoice #</th>
+                        <th>Tenant</th>
+                        <th>Period</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample data -->
+                    <tr>
+                        <td>INV-001</td>
+                        <td>John Doe</td>
+                        <td>March 2024</td>
+                        <td>$1200</td>
+                        <td>Paid</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
