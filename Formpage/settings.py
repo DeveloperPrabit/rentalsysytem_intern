@@ -132,3 +132,8 @@ MEDIA_ROOT=BASE_DIR/'media'
 MEDIA_URL='/media/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Session configuration (optional)
+SESSION_COOKIE_AGE = 1209600  
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  

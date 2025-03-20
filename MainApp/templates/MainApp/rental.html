@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Tenant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(15, 13, 13);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="file"] {
+            padding: 0;
+        }
+
+        .btn {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .view-list {
+            display: inline-block;
+            color: #007bff;
+            text-decoration: none;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .view-list:hover {
+            text-decoration: underline;
+        }
+
+        .form-group i {
+            margin-right: 10px;
+            color: #6c757d;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="{% url 'tenant_list' %}" class="view-list"><i class="fas fa-list"></i> View Tenant List</a>
+
+    <h2><i class="fas fa-user-plus"></i> Add Tenant</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label><i class="fas fa-camera"></i>Photo</label>
+            <input type="file" name="tenant_photo">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-user"></i>Name</label>
+            <input type="text" name="tenant_name" placeholder="Enter Tenant Name">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-map-marker-alt"></i>Address</label>
+            <input type="text" name="tenant_address" placeholder="Enter Address">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-phone"></i>Mobile</label>
+            <input type="text" name="tenant_mobile" placeholder="Enter Mobile Number">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-envelope"></i>Email</label>
+            <input type="email" name="tenant_email" placeholder="Enter Email">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-briefcase"></i>Profession</label>
+            <input type="text" name="tenant_profession" placeholder="Enter Profession">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-home"></i> House Name / Number</label>
+            <input type="text" name="house_name" placeholder="Enter House Name or Number">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-door-closed"></i> Flat No.</label>
+            <input type="text" name="flat_no" placeholder="Enter Flat Number">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-bed"></i> Room No.</label>
+            <input type="text" name="room_no" placeholder="Enter Room Number">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-money-bill-wave"></i> Rent Amount</label>
+            <input type="text" name="rent_amount" placeholder="Enter Rent Amount">
+        </div>
+
+        <div class="form-group">
+            <label><i class="fas fa-calendar-alt"></i> Rent Start Date</label>
+            <input type="date" name="rent_start_date">
+        </div>
+
+        <button class="btn"><i class="fas fa-save"></i> Save Tenant</button>
+    </form>
+</div>
+
+</body>
+</html>
+{% endblock %}

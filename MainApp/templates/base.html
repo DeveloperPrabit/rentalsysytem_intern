@@ -16,8 +16,12 @@
     <div class="dashboard-container">
         <div class="sidebar">
             <div class="user-info">
+                <div class="conta">
+                    <h3 style="text-decoration: underline; height: 10vh;">Dashboard</h3>
+                </div>
                 {% if profile.photo %}
-                    <img src="{{ profile.photo.url }}" alt="Profile Photo" class="profile-photo">
+                <img src="{{ user.profile.photo.url }}" alt="Profile Photo" class="profile-photo">
+                
                 {% else %}
                     <img src="{% static 'images/my.jpg' %}" alt="Default Profile" class="profile-photo">
                 {% endif %}
@@ -33,6 +37,12 @@
                 <a href="{% url 'view_profile' %}" class="menu-item"><i class="fas fa-user"></i> View Profile</a>
                 <a href="{% url 'change_password' %}" class="menu-item"><i class="fas fa-lock"></i> Change Password</a>
                 <a href="{% url 'edit_profile' %}" class="menu-item"><i class="fas fa-camera"></i> Change Profile Photo</a>
+                <a href="{% url 'rental' %}" class="menu-item"><i class="fas fa-user"></i>
+                </i>Add Tenant</a>
+                <a href="{% url 'create_invoice' %}" class="menu-item"><i class="fas fa-plus-circle"></i>
+                </i>Add Invoice</a>
+                <a href="{% url 'invoice_list' %}" class="menu-item"><i class="fas fa-file-invoice"></i>
+                </i>View List</a>
                 <a href="" class="menu-item logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
