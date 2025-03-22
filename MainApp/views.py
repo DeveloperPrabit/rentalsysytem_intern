@@ -3,15 +3,16 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from .models import Profile
 from django.http import HttpResponse
 from .models import Tenant,Invoice
+from .models import Profile
 from .forms import InvoiceForm
 from django.core.exceptions import ValidationError
 
 
 
 # Create your views here.
+
 
 def index(request):
     return render(request,"MainApp/index.html")
@@ -110,3 +111,11 @@ def create_invoice(request):
 def invoice_list(request):
     invoices = Invoice.objects.all()  
     return render(request, 'MainApp/invoice_list.html', {'invoices': invoices})
+
+
+def main(request):
+    return render(request, 'MainApp/m.html')
+
+
+from django.urls import reverse
+

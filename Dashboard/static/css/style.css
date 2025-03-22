@@ -1,0 +1,57 @@
+
+    body {
+        background: linear-gradient(to right, #4b79a1, #283e51);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .login-container {
+        max-width: 400px;
+        margin: 100px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .login-header h3 {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .form-control {
+        border-radius: 20px;
+    }
+
+    .btn-login {
+        width: 100%;
+        background-color: #28a745;
+        color: white;
+        border-radius: 20px;
+        transition: 0.3s;
+    }
+
+    .btn-login:hover {
+        background-color: #218838;
+    }
+
+    .form-check-label {
+        font-size: 14px;
+    }
+
+    .forgot-password {
+        font-size: 14px;
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .g-recaptcha {
+        display: flex;
+        justify-content: center;
+    }
+

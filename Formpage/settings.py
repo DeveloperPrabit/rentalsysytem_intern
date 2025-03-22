@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-f=4hc45ryhj#x%%d(hq7i#@r$nnvbwbw0t%=%t*k=_0^7g7g43"
+SECRET_KEY = config('SECRET_KEY'),
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False),
 
 ALLOWED_HOSTS = []
 
@@ -42,9 +43,17 @@ INSTALLED_APPS = [
 EXTERNAL_APPS=[
     "FormApp",
     "MainApp",
-]
+    "Dashboard",
+    
+    ]
 
 INSTALLED_APPS+=EXTERNAL_APPS
+
+
+
+# Email config (for password reset)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -75,6 +84,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "Formpage.wsgi.application"
+
+AUTH_USER_MODEL = 'Dashboard.CustomUser' 
+
 
 
 # Database
@@ -123,13 +135,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+#STATICFILES_DIRS = [
+ #   os.path.join(BASE_DIR, 'static')
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT=BASE_DIR/'media'
 MEDIA_URL='/media/'
+
+RECAPTCHA_SECRET_KEY = config('RECAPTCHA_SECRET_KEY')
+
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

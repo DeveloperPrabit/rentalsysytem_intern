@@ -1,0 +1,114 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container */
+.signup-container {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Form Heading */
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Messages */
+.messages {
+    margin-bottom: 15px;
+}
+
+.alert {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.alert-danger {
+    background: #ffcccc;
+    color: #a94442;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* Form Fields */
+.input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.form-label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Profile Picture Input */
+input[type="file"] {
+    border: none;
+    background: #f9f9f9;
+    padding: 8px;
+}
+
+/* Submit Button */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Back to Dashboard Link */
+.login-link {
+    margin-top: 15px;
+}
+
+.login-link a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 14px;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}

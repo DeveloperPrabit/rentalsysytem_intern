@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
+
 import re
 
 def register(request):
@@ -82,3 +84,9 @@ def log_in(request):
 
     
     return render(request, 'FormApp/login.html')
+
+
+
+
+
+

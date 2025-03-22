@@ -1,14 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
+#create your model:
 
-# Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
+    #user = models.OneToOneField(User, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='profile_pics/', default='default.jpg')
 
     def __str__(self):
         return f'{self.user.username} Profile'
+
     
 
 class Tenant(models.Model):
