@@ -14,57 +14,25 @@ def login_page(request):
             return redirect(reverse("staff_home"))
         elif getattr(request.user, 'user_type', None) == 'tenant':
             return redirect(reverse("student_home"))
-    return render(request, 'login.html')
+    return render(request, 'Dashboard/login.html')
 
 
 def doLogin(request):
-    if request.method != 'POST':
-        return redirect(reverse('login_page'))
-
-    # reCAPTCHA validation
-    captcha_token = request.POST.get('g-recaptcha-response')
-    if not captcha_token:
-        messages.error(request, 'Please complete the CAPTCHA')
-        return redirect(reverse('login_page'))
-
-    try:
-        response = requests.post(
-            "https://www.google.com/recaptcha/api/siteverify",
-            data={
-                'secret': settings.RECAPTCHA_SECRET_KEY,
-                'response': captcha_token
-            },
-            timeout=5
-        )
-        response.raise_for_status()
-        result = response.json()
-
-        if not result.get('success'):
-            messages.error(request, 'Invalid CAPTCHA. Please try again.')
-            return redirect(reverse('login_page'))
-
-    except requests.exceptions.RequestException as e:
-        messages.error(request, 'CAPTCHA verification failed. Please try again.')
-        return redirect(reverse('login_page'))
-
-    email = request.POST.get('email')
-    password = request.POST.get('password')
-
-    user = authenticate(request, username=email, password=password)
-
-    if user is not None:
-        login(request, user)
-        if getattr(user, 'user_type', None) == 'admin':
-            return redirect(reverse("home"))
-        elif getattr(user, 'user_type', None) == 'manager':
-            return redirect(reverse("staff_home"))
-        elif getattr(user, 'user_type', None) == 'tenant':
-            return redirect(reverse("student_home"))
-        return redirect(reverse("home"))
-    else:
-        messages.error(request, "Invalid email or password")
-        return redirect(reverse('login_page'))
-
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        
+        user = authenticate(request, username=email, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect("home") 
+        else:
+            messages.error(request, "Invalid email or password")
+            return redirect("doLogin")
+    
+    return render(request, "Dashboard/login.html")
+    
 
 def logout_user(request):
     """Logout the user and redirect to login page."""
@@ -73,4 +41,6 @@ def logout_user(request):
 
 
 def home(request):
-    return render(request,'home.html')
+    return render(request,'Dashboard/home.html')
+
+
