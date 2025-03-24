@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>घर बहाल बिल (Rent Invoice)</title>
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+</head>
+<body>
+      
+    <div class="invoice-container">
+        <header>
+            <img src="logo.png" alt="Bhada Pay Logo" class="logo">
+            <h1 class="invoice-title">Rent Invoice</h1>
+        </header>
+
+        <!-- Displaying success or error messages dynamically -->
+        <div class="container">
+            {% if messages %}
+                <div id="messages" class="message-container">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <form class="form" method="POST" action="{% url 'add_form' %}">
+            {% csrf_token %}
+            <div class="section flex">
+                <label>सि.नं.: <input type="text" name="serial_no"></label>
+                <label>बहाल महिना: <input type="text" name="rent_month"></label>
+                <label>मिति: <input type="date" name="date"></label>
+            </div>
+
+            <div class="section">
+                <label>बहालवालाको नाम: <input type="text" name="tenant_name"></label>
+
+                <h3 class="section-title">बहालको विवरण</h3>
+                <div class="section flex">
+                    <label>घर नं.: <input type="text" name="house_no"></label>
+                    <label>फ्ल्याट नं.: <input type="text" name="flat_no"></label>
+                    <label>कोठा नं.: <input type="text" name="room_no"></label>
+                </div>
+
+                <label>बिल्डिङ नाम वा नम्बर: <input type="text" name="building_name"></label>
+            </div>
+
+            <h3 class="section-title">सुल्क विवरण</h3>
+            <div class="section grid-two">
+                <label>बहाल रकम: <input type="text" name="rent_amount"></label>
+                <label>पार्किङ: <input type="text" name="parking_fee"></label>
+                <label>बिजुली: <input type="text" name="electricity_fee"></label>
+                <label>सुरक्षा गार्ड: <input type="text" name="security_fee"></label>
+            </div>
+
+            <h3 class="section-title">जम्मा हिसाबको विवरण</h3>
+            <div class="section grid-two">
+                <label>छुट रकम: <input type="text" name="discount"></label>
+                <label>जम्मा रकम: <input type="text" name="total_amount"></label>
+                <label>बहाल कर: <input type="text" name="tax"></label>
+                <label>कुल जम्मा रकम: <input type="text" name="grand_total"></label>
+            </div>
+
+            <h3 class="section-title">बैंक विवरण</h3>
+            <div class="section">
+                <label>बैंक नाम: <input type="text" name="bank_name"></label>
+                <label>खाता नम्बर: <input type="text" name="account_no"></label>
+                <label>खाता नाम: <input type="text" name="account_name"></label>
+            </div>
+
+            <h3 class="section-title">हस्ताक्षर</h3>
+            <div class="section">
+                <label>बहाल धनि हस्ताक्षर: <input type="text" name="owner_signature"></label>
+                <label>बहाल वाला हस्ताक्षर: <input type="text" name="tenant_signature"></label>
+            </div>
+
+            <p class="note">नोट: बैंक मार्फत वा अन्य महत्वपूर्ण जानकारीहरू भए, अनिवार्य प्रविष्ट गर्नुहोस्।</p>
+
+            <button type="submit" class="submit-btn">पेश गर्नुहोस्</button>
+        </form>
+    </div>
+
+    <!-- Include JavaScript file -->
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>
+{% endblock %}

@@ -29,7 +29,6 @@ urlpatterns = [
     path('dashboard/', include('Dashboard.urls')),
     path("accounts/", include("django.contrib.auth.urls")),
 
-    
 
 
 

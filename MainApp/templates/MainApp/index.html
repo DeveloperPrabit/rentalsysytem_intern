@@ -7,40 +7,7 @@
 
             <div class="settings-container">
                 <h2>Settings</h2>
-
-                <div class="setting-item">
-                    <div>
-                        <i class="fas fa-user setting-icon"></i>
-                        <h3>View Profile</h3>
-                        <p>View your profile information</p>
-                    </div>
-                    <a href="{% url 'view_profile' %}" class="btn">View Profile</a>
-                </div>
-
-                <div class="setting-item">
-                    <div>
-                        <i class="fas fa-lock setting-icon"></i>
-                        <h3>Change Password</h3>
-                        <p>Update your account password</p>
-                    </div>
-                    <a href="{% url 'change_password' %}" class="btn">Change Password</a>
-                </div>
-
-                <div class="setting-item">
-                    <div>
-                        <i class="fas fa-camera setting-icon"></i>
-                        <h3>Change Profile Photo</h3>
-                        <p>Upload or edite new profile picture</p>
-                    </div>
-                    <form action="{% url 'edit_profile' %}" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input type="file" id="profile-photo" name="profile_pic" hidden accept="image/*">
-                        <button type="button" class="btn" onclick="document.getElementById('profile-photo').click()">
-                            Upload Photo
-                        </button>
-                        <button type="submit" class="btn save-btn">Save</button>
-                    </form>
-                </div>
+                <div>hi</div>
             </div>
         </div>
     </div>

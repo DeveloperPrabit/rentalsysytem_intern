@@ -1,16 +1,9 @@
 from django.contrib import admin
-from .models import CustomUser, Admin
+from django.contrib.auth.admin import UserAdmin
+from .models import *
+# Register your models here.
 
-# Custom User Admin
-class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'user_type', 'first_name', 'last_name', 'is_staff')
-    search_fields = ('email', 'first_name', 'last_name')
-    list_filter = ('user_type', 'is_staff')
+class UserModel(UserAdmin):
+    ordering = ('email',)
 
-admin.site.register(CustomUser, CustomUserAdmin)
-
-# Register Admin model
-class AdminAdmin(admin.ModelAdmin):
-    list_display = ('admin',)
-
-admin.site.register(Admin, AdminAdmin)
+admin.site.register(CustomUser, UserModel)

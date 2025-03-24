@@ -3,10 +3,10 @@ from .views import *
 
 urlpatterns = [
     path('register/', register, name='register'), 
-    path('',log_in,name='log_in'),
+    path('',login_page,name='login_page'),
+    path('dologin/',doLogin, name='doLogin'),
+    path('accounts/logout/', Logout_view, name='logout'),
 
-    #For admin:
-    #path("index/", index,name='index',)
-
-
+    #path('admin/logout/',admin_logout, name='admin_logout'), 
+ 
 ]

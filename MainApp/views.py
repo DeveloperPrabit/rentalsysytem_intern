@@ -3,12 +3,12 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from django.http import HttpResponse
 from .models import Tenant,Invoice
 from .models import Profile
 from .forms import InvoiceForm
-from django.core.exceptions import ValidationError
-
+from django.shortcuts import render, redirect
+from .models import RentInvoice
+import uuid 
 
 
 # Create your views here.
@@ -46,57 +46,6 @@ def change_password(request):
 def view_profile(request):
     return render(request, 'MainApp/view_profile.html')
 
-
-def rental(request):
-    if request.method == 'POST':
-        photo = request.FILES.get('tenant_photo')
-        name = request.POST.get('tenant_name')
-        address = request.POST.get('tenant_address')
-        mobile = request.POST.get('tenant_mobile')
-        email = request.POST.get('tenant_email')
-        profession = request.POST.get('tenant_profession')
-        house_name = request.POST.get('house_name')
-        flat_no = request.POST.get('flat_no')
-        room_no = request.POST.get('room_no')
-        rent_amount = request.POST.get('rent_amount')
-        rent_start_date = request.POST.get('rent_start_date')
-        
-        if not all([photo,name, address, mobile, email, rent_amount, rent_start_date]):
-            return HttpResponse("Error: All fields are required except photo.", status=400)
-
-        if not email or '@' not in email:
-            return HttpResponse("Error: Invalid email address.", status=400)
-        
-        if not mobile.isdigit():
-            return HttpResponse("Error: Mobile number should contain only digits.", status=400)
-
-        try:
-            tenant = Tenant(
-                photo=photo,
-                name=name,
-                address=address,
-                mobile=mobile,
-                email=email,
-                profession=profession,
-                house_name=house_name,
-                flat_number=flat_no,
-                room_number=room_no,
-                rent_amount=rent_amount,
-                rent_start_date=rent_start_date,
-                
-            )
-            tenant.save()
-        except ValidationError as e:
-            return HttpResponse(f"Error: {e.message}", status=400)
-
-        return redirect('tenant_list')  
-    return render(request, 'MainApp/rental.html')
-
-def tenant_list(request):
-    tenants = Tenant.objects.all()
-    return render(request, "MainApp/tenant_list.html", {'tenants': tenants})
-
-
 def create_invoice(request):
     if request.method == 'POST':
         form = InvoiceForm(request.POST)
@@ -112,10 +61,88 @@ def invoice_list(request):
     invoices = Invoice.objects.all()  
     return render(request, 'MainApp/invoice_list.html', {'invoices': invoices})
 
+def tenant_list(request):
+    tenants = Tenant.objects.all()
+    return render(request, "MainApp/tenant_list.html", {'tenants': tenants})
 
-def main(request):
-    return render(request, 'MainApp/m.html')
+def add_form(request):
+    if request.method == "POST":
+        serial_number = request.POST.get("serial_number") or str(uuid.uuid4())[:8]  
+        rent_month = request.POST.get("rent_month")
+        date = request.POST.get("date")
+        tenant_name = request.POST.get("tenant_name")
+        house_number = request.POST.get("house_no")
+        flat_number = request.POST.get("flat_no")
+        room_no = request.POST.get("room_no")
+        building_name = request.POST.get("building_name")
+        rent_amount = request.POST.get("rent_amount")
+        parking_fee = request.POST.get("parking_fee")
+        electricity_fee = request.POST.get("electricity_fee")
+        security_fee = request.POST.get("security_fee")
+        discount = request.POST.get("discount")
+        total_amount = request.POST.get("total_amount")
+        tax = request.POST.get("tax")
+        grand_total = request.POST.get("grand_total")
+        bank_name = request.POST.get("bank_name")
+        account_number = request.POST.get("account_no")
+        account_name = request.POST.get("account_name")
+        owner_signature = request.POST.get("owner_signature")
+        tenant_signature = request.POST.get("tenant_signature")
 
+        if not serial_number or not rent_month or not date or not tenant_name:
+            messages.error(request, "कृपया सबै अनिवार्य फिल्डहरू भर्नुहोस्।")
+            return redirect('add_form')
 
-from django.urls import reverse
+        try:
+            rent_amount = float(rent_amount)
+        except ValueError:
+            messages.error(request, "कृपया वैध बहाल रकम प्रविष्ट गर्नुहोस्।")  
+            return redirect('add_form')
 
+        try:
+            total_amount = float(total_amount)
+        except ValueError:
+            messages.error(request, "कृपया वैध कुल रकम प्रविष्ट गर्नुहोस्।")  
+
+        try:
+            discount = float(discount) if discount else 0
+        except ValueError:
+            messages.error(request, "कृपया वैध छुट रकम प्रविष्ट गर्नुहोस्।")
+            return redirect('add_form')
+
+        try:
+            grand_total = float(grand_total)
+        except ValueError:
+            messages.error(request, "कृपया वैध कुल जम्मा रकम प्रविष्ट गर्नुहोस्।")
+            return redirect('add_form')
+
+        invoice = RentInvoice.objects.create(
+            serial_number=serial_number,
+            rent_month=rent_month,
+            date=date,
+            tenant_name=tenant_name,
+            house_number=house_number,
+            flat_number=flat_number,
+            room_no=room_no,
+            building_name=building_name,
+            rent_amount=rent_amount,
+            parking_fee=parking_fee,
+            electricity_fee=electricity_fee,
+            security_fee=security_fee,
+            discount=discount,
+            total_amount=total_amount,
+            tax=tax,
+            grand_total=grand_total,
+            bank_name=bank_name,
+            account_number=account_number,
+            account_name=account_name,
+            owner_signature=owner_signature,
+            tenant_signature=tenant_signature,
+        )
+
+        invoice.save()
+
+        messages.success(request, "रेंट बिल सफलतापूर्वक थपियो!")
+        return redirect('add_form')
+
+    return render(request, "MainApp/add_form.html")
