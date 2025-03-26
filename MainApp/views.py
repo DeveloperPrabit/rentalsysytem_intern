@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from .models import Tenant,Invoice
-from .models import Profile
+from .models import Invoice
+from .models import Profile,RentInvoice
 from .forms import InvoiceForm
 from django.shortcuts import render, redirect
 from .models import RentInvoice
@@ -46,23 +46,28 @@ def change_password(request):
 def view_profile(request):
     return render(request, 'MainApp/view_profile.html')
 
+
 def create_invoice(request):
     if request.method == 'POST':
         form = InvoiceForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('invoice_list')
+            tenant = form.cleaned_data['tenant']
+            if not RentInvoice.objects.filter(id=tenant.id).exists():
+                form.add_error('tenant', 'Selected tenant does not exist.')
+            else:
+                form.save()
+                return redirect('invoice_list')
     else:
         form = InvoiceForm()
+    
     return render(request, 'MainApp/create_invoice.html', {'form': form})
-
 
 def invoice_list(request):
     invoices = Invoice.objects.all()  
     return render(request, 'MainApp/invoice_list.html', {'invoices': invoices})
 
 def tenant_list(request):
-    tenants = Tenant.objects.all()
+    tenants = RentInvoice.objects.all()
     return render(request, "MainApp/tenant_list.html", {'tenants': tenants})
 
 def add_form(request):

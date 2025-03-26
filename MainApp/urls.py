@@ -11,5 +11,5 @@ urlpatterns=[
     path('tenant_list/', tenant_list, name='tenant_list'),
     path('create-invoice/',create_invoice, name='create_invoice'),
     path('invoices/',invoice_list, name='invoice_list'),
-
+    
 ]

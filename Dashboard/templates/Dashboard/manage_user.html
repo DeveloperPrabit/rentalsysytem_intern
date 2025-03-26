@@ -1,5 +1,85 @@
-{% extends 'dashboard/base.html' %}
-{% load static %}
+{% extends 'Dashboard/base.html' %}
 
-{% block content %}user
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Users</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #e3f2fd; 
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #1e88e5; /* Blue background for the header */
+            color: white; /* White text color for header */
+        }
+        tr:nth-child(even) {
+            background-color: #bbdefb; /* Lighter blue for even rows */
+        }
+        tr:hover {
+            background-color: #90caf9; /* Slightly darker blue when hovered */
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1e88e5; /* Blue color for the heading */
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+<body>
+    <h1>Users List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>User Type</th>
+                <th>Terms of Use</th>
+                <th>Full Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.full_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.mobile }}</td>
+                    <td>{{ user.get_user_type_display }}</td>
+                    <td>{{ user.terms_of_use|yesno:"Yes,No" }}</td>
+                    <td>{{ user.full_address }}</td>
+                    <td class="action-buttons">
+                        <a href="" style="color: #1e88e5; text-decoration: none;">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{% url 'delete_user' user.id %}" style="color: #d32f2f; text-decoration: none;"
+                           onclick="return confirm('Are you sure you want to delete this user?');">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7">No users available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
 {% endblock %}

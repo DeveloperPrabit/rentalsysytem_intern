@@ -100,7 +100,7 @@ def register(request):
 
     return render(request, 'FormApp/register.html')
 
-def doLogin(request):
+'''def doLogin(request):
     if request.method != 'POST':
         return HttpResponse("<h4>Denied</h4>")
 
@@ -130,4 +130,27 @@ def login_page(request):
         elif request.user.user_type == 'admin':
             return redirect(reverse("home"))
 
+    return render(request, 'FormApp/login.html')'''
+
+
+
+def doLogin(request):
+    if request.method != 'POST':
+        return HttpResponse("<h4>Denied</h4>")
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    remember_me = request.POST.get('remember') == 'on'
+    user = EmailBackend().authenticate(request, username=email, password=password)
+    if user is not None:
+        login(request, user)
+        if not remember_me:
+            request.session.set_expiry(0)
+        return redirect(reverse("index") if user.user_type == 'admin' else reverse("home"))
+    else:
+        messages.error(request, "Invalid credential info")
+        return redirect("login_page")
+
+def login_page(request):
+    if request.user.is_authenticated:
+        return redirect(reverse("index") if request.user.user_type == 'admin' else reverse("home"))
     return render(request, 'FormApp/login.html')

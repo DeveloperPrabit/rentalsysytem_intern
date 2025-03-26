@@ -1,8 +1,8 @@
 /* Dashboard Styles */
 :root {
-    --sidebar-width: 260px;
+    --sidebar-width: 280px;
     --sidebar-bg: #2A3042;
-    --primary-color: #4A56E2;
+    --primary-color: #2333af;
     --accent-color: #667EEA;
 }
 
@@ -15,9 +15,9 @@
 .sidebar {
     width: var(--sidebar-width);
     background: var(--sidebar-bg);
-    color: white;
+    color: #eee2e2;
     position: fixed;
-    height: 100vh;
+    height: 140vh;
     transition: all 0.3s;
 }
 
@@ -26,10 +26,6 @@
     border-bottom: 1px solid #3A425E;
 }
 
-.brand-logo {
-    width: 50px;
-    margin-bottom: 1rem;
-}
 
 .brand-title {
     font-size: 1.3rem;
@@ -78,7 +74,7 @@
 }
 
 .top-navbar {
-    background: white;
+    background: #605e66;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -89,22 +85,22 @@
 .sidebar-toggle {
     background: none;
     border: none;
-    font-size: 1.25rem;
-    color: #2D3748;
-    margin-right: 1rem;
+    font-size: 1.50rem;
+    color: #e8eaee;
+    margin-right:1.25rem;
 }
 
 .page-title {
     margin: 0;
     font-weight: 600;
-    color: #2D3748;
+    color: #dee0e4;
 }
 
 .user-profile {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: #2D3748;
+    color: #f5f7fa;
     cursor: pointer;
 }
 
@@ -305,4 +301,7 @@
 
 .main-content.expanded {
     margin-left: 0;
+}
+.brand-title i {
+    margin-right: 10px; /* Add space between the icon and text */
 }

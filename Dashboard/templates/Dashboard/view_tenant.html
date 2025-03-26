@@ -1,6 +1,136 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
-
 {% block content %}
-hi view_tenant
+
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Invoice List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #f4f4f9; 
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(5, 4, 4, 0.1);
+            margin: auto;
+            font-size: 12px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: hsl(207, 90%, 32%); 
+            color: white;
+        }
+        td {
+            background-color: #ffffff; 
+        }
+        tr:nth-child(even) {
+            background-color: #f1f1f1; 
+        }
+        .group-header {
+            text-align: center;
+            font-weight: bold;
+            background-color: #087dc0; 
+            border: 1px solid #d6cfcf;
+        }
+        .empty-message {
+            color: red;
+            font-weight: bold;
+        }
+        tfoot {
+            background-color: #007bff;
+            color: white;
+        }
+        .list{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="list">Rental Invoice List</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="2">सिरियल नम्बर</th>
+                <th rowspan="2">बहाल महिना</th>
+                <th colspan="4" class="group-header">बहालको विवरण</th>
+                <th colspan="8" class="group-header">विवरण शुल्क</th>
+                <th colspan="3" class="group-header">बैंक विवरण</th>
+                <th colspan="2" class="group-header">हस्ताक्षर</th>
+                <th rowspan="2">मिति</th>  
+            </tr>
+            <tr>
+                <!-- Property Details -->
+                <th>घर नम्बर</th>
+                <th>फ्ल्याट नम्बर</th>
+                <th>कोठा नम्बर</th>
+                <th>बिल्डिङको नाम</th>
+                <!-- Fees Details -->
+                <th>भाडा रकम</th>
+                <th>पार्किङ शुल्क</th>
+                <th>बिजुली शुल्क</th>
+                <th>सुरक्षा शुल्क</th>
+                <th>छुट</th>
+                <th>कुल रकम</th>
+                <th>कर</th>
+                <th>कुल योग</th>
+                <!-- Bank Details -->
+                <th>बैंकको नाम</th>
+                <th>खाता नम्बर</th>
+                <th>खाता नाम</th>
+                <!-- Signatures -->
+                <th>मालिकको हस्ताक्षर</th>
+                <th>धोकाको हस्ताक्षर</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in rent_invoices %}
+            <tr>
+                <td>{{ invoice.serial_number }}</td>
+                <td>{{ invoice.tenant_name }}</td>
+                <td>{{ invoice.house_number }}</td>
+                <td>{{ invoice.flat_number }}</td>
+                <td>{{ invoice.room_no }}</td>
+                <td>{{ invoice.building_name }}</td>
+                <td>{{ invoice.rent_amount }}</td>
+                <td>{{ invoice.parking_fee }}</td>
+                <td>{{ invoice.electricity_fee }}</td>
+                <td>{{ invoice.security_fee }}</td>
+                <td>{{ invoice.discount }}</td>
+                <td>{{ invoice.total_amount }}</td>
+                <td>{{ invoice.tax }}</td>
+                <td>{{ invoice.grand_total }}</td>
+                <td>{{ invoice.bank_name }}</td>
+                <td>{{ invoice.account_number }}</td>
+                <td>{{ invoice.account_name }}</td>
+                <td>{{ invoice.owner_signature }}</td>
+                <td>{{ invoice.tenant_signature }}</td>
+                <td>{{ invoice.date|date:"Y-m-d" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="18" class="empty-message" style="text-align:center;">कुनै इन्भोइस उपलब्ध छैन।</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="18" style="text-align:center; font-weight:bold;">
+                    कुल योग: {{ total_grand_total }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+</body>
+</html>
 {% endblock %}

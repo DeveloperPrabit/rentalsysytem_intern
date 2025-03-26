@@ -1,4 +1,4 @@
-{% load static %}
+ {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,12 +22,26 @@
 <body class="dashboard-body">
     <!-- Sidebar -->
     <div class="sidebar">
+       <!-----<div class="brand-header">
+           <img src="{% static 'img/logo.png' %}" alt="Logo" class="brand-logo">
+            <h5 class="brand-title"></h5>
+            <i class="fas fa-home">Home</i>
+        </div>--->
         <div class="brand-header">
-            <img src="{% static 'img/logo.png' %}" alt="Logo" class="brand-logo">
-            <h5 class="brand-title">Rental Management System</h5>
+            <h5 class="brand-title">
+                <i class="fas fa-home"></i> <!-- Home Icon -->
+                Home
+            </h5>
         </div>
         
+
+        
         <nav class="nav-links">
+            <a href="{% url 'home' %}" class="contain" style="font-size: 18px; font-weight: bold; color: white; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-tachometer-alt" style="font-size: 22px; color: white;"></i> <!-- Dashboard Icon -->
+                <span>Dashboard</span>
+            </a>
+        
             <div class="nav-section">
                 <h6 class="section-title">USERS MANAGEMENT</h6>
                 <a href="{% url 'view_users' %}" class="nav-link {% if request.resolver_match.url_name == 'view_users' %}active{% endif %}">
@@ -64,7 +78,6 @@
                 <button class="sidebar-toggle" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h4 class="page-title" id="pageTitle">Admin Dashboard</h4>
             </div>
             
             <div class="navbar-right">

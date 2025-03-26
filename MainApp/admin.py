@@ -1,16 +1,19 @@
 from django.contrib import admin
-from .models import Tenant,RentInvoice
-#create your admin page:
+from .models import RentInvoice, Invoice
 
 
-class TenantAdmin(admin.ModelAdmin):
-    list_display = ['name', 'address', 'mobile', 'email', 'house_name', 'flat_number', 'room_number', 'rent_amount', 'rent_start_date']
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ['id','invoice_number', 'tenant', 'date_issued', 'due_date', 'total_amount', 'status']
+    search_fields = ['invoice_number', 'tenant__name']
+    list_filter = ['status', 'date_issued']
+    ordering = ['-date_issued']
 
-admin.site.register(Tenant, TenantAdmin)
+admin.site.register(Invoice, InvoiceAdmin)
 
+# RentInvoice Admin
 @admin.register(RentInvoice)
 class RentInvoiceAdmin(admin.ModelAdmin):
-    list_display = ('serial_number', 'tenant_name', 'rent_month', 'date', 'total_amount', 'grand_total')
+    list_display = ('id','serial_number', 'tenant_name', 'rent_month', 'date', 'total_amount', 'grand_total')
     search_fields = ('serial_number', 'tenant_name', 'rent_month')
     list_filter = ('rent_month',)
     ordering = ('-date',)
