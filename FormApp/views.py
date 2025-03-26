@@ -4,12 +4,16 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth import login
-from django.contrib.auth.models import User
 from django.contrib.auth import logout
-
+from Dashboard.models import *
 from django.http import HttpResponse
 from .EmailBackend import EmailBackend
+import requests
 
+
+def Logout_view(request):
+    logout(request)
+    return redirect('login_page')
 
 def register(request):
     if request.method == 'POST':
@@ -29,6 +33,29 @@ def register(request):
             'secret': captcha_key,
             'response': captcha_token
         }
+        error=[]
+
+
+        # Google reCAPTCHA
+        captcha_token = request.POST.get('g-recaptcha-response')
+        captcha_url = "https://www.google.com/recaptcha/api/siteverify"
+        captcha_key = "6LfswtgZAAAAABX9gbLqe-d97qE2g1JP8oUYritJ"
+        data = {
+            'secret': captcha_key,
+            'response': captcha_token
+        }
+
+        try:
+            captcha_server = requests.post(captcha_url, data=data)
+            response = captcha_server.json()  # Directly parse JSON
+            if not response.get('success', False):
+                messages.error(request, 'Invalid Captcha. Try Again')
+                return redirect('/')
+        except Exception:
+            messages.error(request, 'Captcha could not be verified. Try Again')
+            return redirect('/')
+
+
 
         if not full_name or not full_address or not email or not mobile or not password:
             errors.append("All fields are required.")
@@ -48,7 +75,7 @@ def register(request):
         if not terms:
             errors.append("You must agree to the terms and conditions.")
 
-        if User.objects.filter(email=email).exists():
+        if CustomUser.objects.filter(email=email).exists():
             errors.append("Email is already registered.")
 
         if errors:
@@ -57,7 +84,7 @@ def register(request):
             return redirect('register')
         
         # Create the user
-        user =User.objects.create(
+        user =CustomUser.objects.create(
             full_name=full_name,
             full_address=full_address,
             email=email,
@@ -73,43 +100,34 @@ def register(request):
 
     return render(request, 'FormApp/register.html')
 
-
-
-
-
 def doLogin(request):
     if request.method != 'POST':
         return HttpResponse("<h4>Denied</h4>")
 
-    # Assuming EmailBackend is a custom backend, make sure it's imported properly
-    user = EmailBackend().authenticate(request, username=request.POST.get('email'), password=request.POST.get('password'))
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    remember_me = request.POST.get('remember') == 'on'  
+
+    user = EmailBackend().authenticate(request, username=email, password=password)
 
     if user is not None:
-        # Login the user
         login(request, user)
-        
-        # Redirect user based on user type
-        if user.user_type == 'admin':  # Correctly checking user_type field
-            return redirect(reverse("home"))
-        elif user.user_type == 'user':  # Correctly checking user_type field
+
+        if not remember_me:
+            request.session.set_expiry(0)
+        if user.user_type == 'admin':
             return redirect(reverse("index"))
-        else:
-            messages.error(request, "Invalid user type.")
-            return redirect("login_page")
+        elif user.user_type == 'user':
+            return redirect(reverse("home"))
     else:
-        messages.error(request, "Invalid login credentials.")
-        return redirect("login_page")
-
-
+        messages.error(request, "Invalid credential info")
+        return redirect("login_page")  
+    
 def login_page(request):
     if request.user.is_authenticated:
-        if request.user.user_type == 'admin':  # Correctly checking user_type field
-            return redirect(reverse("home"))
-        elif request.user.user_type == 'user':  # Correctly checking user_type field
+        if request.user.user_type == 'admin':
             return redirect(reverse("index"))
+        elif request.user.user_type == 'user':
+            return redirect(reverse("home"))
+
     return render(request, 'FormApp/login.html')
-
-
-def Logout_view(request):
-    logout(request)
-    return redirect('login_page')

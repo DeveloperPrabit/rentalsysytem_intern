@@ -22,8 +22,8 @@
         {% endif %}
 
         <!-- Login Form -->
-        <form method="post" action="{% url 'login_page' %}">
-            {% csrf_token %}
+        <form method="post" action="{% url 'doLogin' %}">
+                     {% csrf_token %}
             <div class="input-group">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" id="email" name="email" placeholder="you@example.com" required>

@@ -1,16 +1,17 @@
-from django.contrib.auth.models import AbstractUser, UserManager
-from django.db import models
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.conf import settings
+
+
 
 class CustomUserManager(BaseUserManager):
     def _create_user(self, email, password, **extra_fields):
+        """Helper function to create users with hashed passwords."""
         if not email:
             raise ValueError("The Email field must be set")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)
+        user.set_password(password)  # Hashes password
         user.save(using=self._db)
         return user
 
@@ -18,45 +19,43 @@ class CustomUserManager(BaseUserManager):
         """Create and return a regular user."""
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
+
+        if not extra_fields.get("terms_of_use", False):
+            raise ValueError("Users must accept the Terms of Use.")
+        
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password=None, **extra_fields):
         """Create and return a superuser."""
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-
         return self._create_user(email, password, **extra_fields)
 
-
 class CustomUser(AbstractUser):
-
-    USER_TYPE = [
-        ('admin', 'Admin'),
-        ('user', 'User'),
+    user_type = [
+        ('admin', 'admin'),
+        ('user', 'user'),
     ]
 
-    username = None  # Remove the username field
+    username = None  # Remove username field
     email = models.EmailField(unique=True)
-    user_type = models.CharField(max_length=20, choices=USER_TYPE, default='user')
-    address = models.TextField(blank=True, null=True)
+    mobile = models.CharField(max_length=15, unique=True)  # Ensure unique mobile numbers
+    user_type = models.CharField(max_length=10, choices=user_type, default='user')
+    terms_of_use = models.BooleanField(default=False)  # Required during registration
     full_name = models.CharField(max_length=255)
     full_address = models.TextField()
-    mobile = models.CharField(max_length=15)
-    terms_of_use = models.BooleanField(default=False)  # No need for null=True here.
+    USERNAME_FIELD = 'email'  # Set email as the username
+    REQUIRED_FIELDS = []  # Essential fields
 
-
-
-    USERNAME_FIELD = 'email'  # Email is now the username
-    REQUIRED_FIELDS = []  # No extra required fields
-
-    objects = CustomUserManager()  # Use the custom manager
+    objects = CustomUserManager()
 
     class Meta:
         verbose_name = "Custom User"
         verbose_name_plural = "Custom Users"
 
     def __str__(self):
-        return f"{self.email} ({self.get_user_type_display()})"
+        return f"{self.first_name} {self.last_name} - {self.email} ({self.get_user_type_display()})"
+
 
 
 class Admin(models.Model):
