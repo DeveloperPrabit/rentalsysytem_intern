@@ -10,11 +10,11 @@ class LoginCheckMiddleware(MiddlewareMixin):
         if user.is_authenticated:
             # Admin should not access user views
             if user.user_type == 'admin':
-                if modulename == 'FormApp.home':  # Example user module
+                if modulename == 'Dashboard.home':  # Example user module
                     return redirect(reverse('home'))
             # User should not access admin views
             elif user.user_type == 'user':
-                if modulename == 'FormApp.index':  # Example admin module
+                if modulename == 'MainApp.index':  # Example admin module
                     return redirect(reverse('index'))
         else:
             # Redirect unauthenticated users to login unless accessing login/auth pages

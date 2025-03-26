@@ -125,9 +125,9 @@ def doLogin(request):
     
 def login_page(request):
     if request.user.is_authenticated:
-        if request.user.user_type == 'admin':
+        if request.user.user_type == 'user':
             return redirect(reverse("index"))
-        elif request.user.user_type == 'user':
+        elif request.user.user_type == 'admin':
             return redirect(reverse("home"))
 
     return render(request, 'FormApp/login.html')
